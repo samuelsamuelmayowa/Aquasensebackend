@@ -236,4 +236,4 @@ class VendorMainListin(BaseModel):
 @router.get("/allvendors", response_model=VendorMainListin )
 def getUser(db: Session = Depends(get_db)):
     vendors  = db.query(Vendor).all()
-    return {"message":"showing all farmers", "data": vendors}
+    return {"message":"showing all Vendors", "data": vendors}
