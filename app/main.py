@@ -26,7 +26,7 @@ from .routers import(contact,
                      # products,
                      # dailyrecords,
                      # feeds, waitlist, income, stocking,
-                     labs, agent, checkout,test , userimage ,admin, clusteradd)
+                     labs, agent, checkout,test , userimage ,admin, clusteradd,syncrouter)
 # expenses , profileupdate, myfarm, ponds)   # 👈 import your auth router
 from .database import engine
 from . import models
@@ -215,4 +215,6 @@ app.include_router(vetsupport.router,prefix="/api/v1" )
 app.include_router(paystack.router,prefix="/api/v1" )
 app.include_router(clusteradd.router,prefix="/api/v1" )
 app.include_router(admin.router,prefix="/api/v1" )
+app.include_router(syncrouter.router,prefix="/api/v1" )
+
 # app.run_server(debug=True, port=8050, host='0.0.0.0')

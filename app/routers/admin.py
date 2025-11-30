@@ -226,8 +226,6 @@ def admin_verify_otp(data: VerifyOTP, db: Session = Depends(get_db)):
 def admin_me(current_admin: Admin = Depends(get_current_admin)):
     """Return current authenticated admin info."""
     return current_admin
-
-
 class VendorMainListin(BaseModel):
     message:str
     data:List[VendorResponse]
