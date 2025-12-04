@@ -117,6 +117,67 @@ class User(Base):
     incomes = relationship("Income", back_populates="farmer", cascade="all, delete-orphan")
     stockings = relationship("Stocking", back_populates="farmer", cascade="all, delete-orphan")
 
+#
+# class BatchInsight(Base):
+#     __tablename__ = "batch_insights"
+#     id = Column(Integer, primary_key=True)
+#     batch_id = Column(String(100), index=True)
+#     date = Column(Date)
+#     month = Column(Integer)
+#     month_name = Column(String(100))
+#     population_start = Column(Integer)
+#     population_end = Column(Integer)
+#     recorded_mortality_no = Column(Integer)
+#     recorded_mortality_percent = Column(Float)
+#     harvest_no = Column(Integer)
+#     abw_start_g = Column(Float)
+#     abw_end_g = Column(Float)
+#     growth_rate_g_per_day = Column(Float)
+#     sgr_percent = Column(Float)
+#     adg_g = Column(Float)
+#     biomass_start_kg = Column(Float)
+#     biomass_end_kg = Column(Float)
+#     growth_kg = Column(Float)
+#     accumulated_growth_kg = Column(Float)
+#     feed_recorded_kg = Column(Float)
+#     accumulated_feed_kg = Column(Float)
+#     fcr = Column(Float)
+#     accumulated_fcr = Column(Float)
+class BatchInsight(Base):
+    __tablename__ = "batch_insights"
+
+    id = Column(Integer, primary_key=True, index=True)
+    batch_id = Column(String(100), index=True)
+    date = Column(String(100))
+
+    month = Column(Integer)
+    month_name = Column(String(100))
+
+    population_start = Column(Integer)
+    population_end = Column(Integer)
+    recorded_mortality_no = Column(Integer)
+    recorded_mortality_percent = Column(Float)
+    harvest_no = Column(Integer)
+
+    abw_start_g = Column(Float)
+    abw_end_g = Column(Float)
+    growth_rate_g_per_day = Column(Float)
+    sgr_percent = Column(Float)
+    adg_g = Column(Float)
+
+    biomass_start_kg = Column(Float)
+    biomass_end_kg = Column(Float)
+    growth_kg = Column(Float)
+    accumulated_growth_kg = Column(Float)
+
+    feed_recorded_kg = Column(Float)
+    accumulated_feed_kg = Column(Float)
+    fcr = Column(Float)
+    accumulated_fcr = Column(Float)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
 
 class Unit(Base):
     __tablename__ = "units"
@@ -303,7 +364,6 @@ class Income(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, nullable=True)
     is_synced = Column(Integer, default=0)
-
     farmer = relationship("User", back_populates="incomes")
 
 
@@ -427,6 +487,52 @@ class OperationalExpense(Base):
     updated_at = Column(DateTime, nullable=True)
     is_synced = Column(Integer, default=0)
 
+
+class ProductionMetric(Base):
+    __tablename__ = "production_metrics"
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    farmer_id = Column(Integer, nullable=False, index=True)
+    batch_id = Column(String(36), nullable=True, index=True)
+    unit_id = Column(String(36), nullable=True, index=True)
+    production_cycle = Column(Integer, nullable=True)
+
+    # raw inputs
+    pond_area_m2 = Column(Float, nullable=True)
+    number_stocked = Column(Integer, nullable=True)
+    number_harvested = Column(Integer, nullable=True)
+    initial_total_biomass_kg = Column(Float, nullable=True)
+    final_total_biomass_kg = Column(Float, nullable=True)
+    total_feed_given_kg = Column(Float, nullable=True)
+    total_feed_cost = Column(Float, nullable=True)
+
+    # computed fields
+    yield_kg_m2 = Column(Float, nullable=True)
+    yield_kg_cycle = Column(Float, nullable=True)
+    survival_rate_pct = Column(Float, nullable=True)
+    mortality_rate_pct = Column(Float, nullable=True)
+    ADG_g_day = Column(Float, nullable=True)
+    SGR_pct_day = Column(Float, nullable=True)
+    FCR = Column(Float, nullable=True)
+    total_weight_gain_kg = Column(Float, nullable=True)
+    feed_cost_per_kg_produced = Column(Float, nullable=True)
+    stocking_density_fish_m2 = Column(Float, nullable=True)
+    total_cost = Column(Float, nullable=True)
+    cost_per_kg = Column(Float, nullable=True)
+    total_revenue = Column(Float, nullable=True)
+    gross_profit = Column(Float, nullable=True)
+    profit_per_kg = Column(Float, nullable=True)
+    gross_margin_pct = Column(Float, nullable=True)
+    ROI_pct = Column(Float, nullable=True)
+
+    computed_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    __table_args__ = (
+        UniqueConstraint("farmer_id", "batch_id", "unit_id", "production_cycle", name="uq_prodmetric_fbuc"),
+    )
+#
 # class SyncBase:
 #     # client-provided UUID primary key
 #     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))

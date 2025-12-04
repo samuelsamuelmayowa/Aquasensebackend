@@ -1,8 +1,160 @@
+from __future__ import annotations
+
+# from typing import Optional, List
+# from datetime import datetime
+
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
 
 
+
+
+
+# syncschemas.py
+
+# -------------------
+# Finance / Expense Schemas
+# -------------------
+
+class IncomeIn(BaseModel):
+    id: Optional[str] = None
+    incomeType: Optional[str] = Field(None, alias="income_type")
+    amountEarned: Optional[float] = Field(None, alias="amount_earned")
+    amount: Optional[float] = None
+    quantitySold: Optional[int] = Field(None, alias="quantity_sold")
+    paymentMethod: Optional[str] = Field(None, alias="payment_method")
+    date: Optional[datetime] = Field(None, alias="date")  # maps to income_date
+    isSynced: Optional[int] = Field(None, alias="isSynced")
+    createdAt: Optional[datetime] = Field(None, alias="createdAt")
+    updatedAt: Optional[datetime] = Field(None, alias="updatedAt")
+
+    class Config:
+        allow_population_by_field_name = True
+        orm_mode = True
+
+class StockingIn(BaseModel):
+    id: Optional[str] = None
+    fishType: Optional[str] = Field(None, alias="fish_type")
+    quantityPurchased: Optional[int] = Field(None, alias="quantity_purchased")
+    totalAmount: Optional[float] = Field(None, alias="total_amount")
+    date: Optional[datetime] = None
+    isSynced: Optional[int] = Field(None, alias="isSynced")
+    createdAt: Optional[datetime] = None
+    updatedAt: Optional[datetime] = None
+
+    class Config:
+        allow_population_by_field_name = True
+        orm_mode = True
+
+class FeedIn(BaseModel):
+    id: Optional[str] = None
+    feedName: Optional[str] = Field(None, alias="feed_name")
+    feedForm: Optional[str] = Field(None, alias="feed_form")
+    feedSize: Optional[str] = Field(None, alias="feed_size")
+    quantity: Optional[int] = None
+    unit: Optional[str] = None
+    costPerUnit: Optional[float] = Field(None, alias="cost_per_unit")
+    totalAmount: Optional[float] = Field(None, alias="total_amount")
+    date: Optional[datetime] = None
+    isSynced: Optional[int] = Field(None, alias="isSynced")
+    createdAt: Optional[datetime] = None
+    updatedAt: Optional[datetime] = None
+
+    class Config:
+        allow_population_by_field_name = True
+        orm_mode = True
+
+class LabourIn(BaseModel):
+    id: Optional[str] = None
+    labourType: Optional[str] = Field(None, alias="labour_type")
+    numberOfWorkers: Optional[int] = Field(None, alias="number_of_workers")
+    totalAmount: Optional[float] = Field(None, alias="total_amount")
+    date: Optional[datetime] = None
+    paymentMethod: Optional[str] = Field(None, alias="payment_method")
+    notes: Optional[str] = None
+    isSynced: Optional[int] = Field(None, alias="isSynced")
+    createdAt: Optional[datetime] = None
+    updatedAt: Optional[datetime] = None
+
+    class Config:
+        allow_population_by_field_name = True
+        orm_mode = True
+
+class MedicationIn(BaseModel):
+    id: Optional[str] = None
+    medicationName: Optional[str] = Field(None, alias="medication_name")
+    quantity: Optional[str] = None
+    totalCost: Optional[float] = Field(None, alias="total_cost")
+    datePaid: Optional[datetime] = Field(None, alias="date_paid")
+    paymentMethod: Optional[str] = Field(None, alias="payment_method")
+    notes: Optional[str] = None
+    isSynced: Optional[int] = Field(None, alias="isSynced")
+    createdAt: Optional[datetime] = None
+    updatedAt: Optional[datetime] = None
+
+    class Config:
+        allow_population_by_field_name = True
+        orm_mode = True
+
+class MaintenanceIn(BaseModel):
+    id: Optional[str] = None
+    activityType: Optional[str] = Field(None, alias="activity_type")
+    totalCost: Optional[float] = Field(None, alias="total_cost")
+    datePaid: Optional[datetime] = Field(None, alias="date_paid")
+    paymentMethod: Optional[str] = Field(None, alias="payment_method")
+    notes: Optional[str] = None
+    isSynced: Optional[int] = Field(None, alias="isSynced")
+    createdAt: Optional[datetime] = None
+    updatedAt: Optional[datetime] = None
+
+    class Config:
+        allow_population_by_field_name = True
+        orm_mode = True
+
+class LogisticsIn(BaseModel):
+    id: Optional[str] = None
+    activityType: Optional[str] = Field(None, alias="activity_type")
+    totalCost: Optional[float] = Field(None, alias="total_cost")
+    datePaid: Optional[datetime] = Field(None, alias="date_paid")
+    paymentMethod: Optional[str] = Field(None, alias="payment_method")
+    notes: Optional[str] = None
+    isSynced: Optional[int] = Field(None, alias="isSynced")
+    createdAt: Optional[datetime] = None
+    updatedAt: Optional[datetime] = None
+
+    class Config:
+        allow_population_by_field_name = True
+        orm_mode = True
+
+class OperationalExpenseIn(BaseModel):
+    id: Optional[str] = None
+    expenseName: Optional[str] = Field(None, alias="expense_name")
+    totalCost: Optional[float] = Field(None, alias="total_cost")
+    datePaid: Optional[datetime] = Field(None, alias="date_paid")
+    paymentMethod: Optional[str] = Field(None, alias="payment_method")
+    notes: Optional[str] = None
+    isSynced: Optional[int] = Field(None, alias="isSynced")
+    createdAt: Optional[datetime] = None
+    updatedAt: Optional[datetime] = None
+
+    class Config:
+        allow_population_by_field_name = True
+        orm_mode = True
+
+class FinanceIn(BaseModel):
+    income: Optional[List[IncomeIn]] = []
+    stocking: Optional[List[StockingIn]] = []
+    feed: Optional[List[FeedIn]] = []
+    labour: Optional[List[LabourIn]] = []
+    medication: Optional[List[MedicationIn]] = []
+    maintenance: Optional[List[MaintenanceIn]] = []
+    logistics: Optional[List[LogisticsIn]] = []
+    operationalExpenses: Optional[List[OperationalExpenseIn]] = Field([], alias="operationalExpenses")
+
+    class Config:
+        allow_population_by_field_name = True
+        orm_mode = True
 # -------------------------
 # Daily Record
 # -------------------------
